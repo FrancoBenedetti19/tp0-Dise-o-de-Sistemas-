@@ -1,0 +1,84 @@
+clase Ventas 
+    atributo productos:lista[Prendas]
+    atributo fecha:Fecha
+    atributo formaDePago:FormaDePago
+    metodo total():float
+        retornar formaDePago.monto(productos)
+    fin metodo
+fin clase 
+
+
+
+clase Prendas 
+    atributo prenda:Prenda
+    atributo cantidad:int
+    metodo subtotal():float
+        retornar prenda.calcularPrecio() * cantidad
+    fin metodo
+fin clase
+
+
+clase Prenda 
+    atributo precioBase:float
+    atributo estado:EstadoPrenda
+    metodo calcularPrecio():float
+        retornar estado.aplicarPrecio(precioBase)
+    fin metodo
+fin clase 
+
+
+clase NUEVA implementa Estado  
+    metodo aplicarPrecio(precioBase:float):float
+        retornar precioBase 
+    fin metodo
+fin clase
+
+clase PROMOCION implementa Estado
+    atributo descuento:float
+    metodo aplicarPrecio(precioBase:float):float
+        retornar precioBase - descuento
+    fin metodo
+fin clase
+
+clase LIQUIDACION implementa Estado
+    metodo aplicarPrecio(precioBase:float):float
+        retorna precioBase * 0.5
+    fin metodo
+fin clase
+
+interfaz Estado
+metodo aplicarPrecio(precioBase:float):float
+fin interfaz
+
+interfaz FormaDePago 
+monto(productos:lista[Prendas])
+fin interfaz
+
+
+
+clase Efectivo implementa FormaDePago 
+    metodo monto(productos:lista de PrendasVendidas)
+        variable total = 0
+        PARA cada prenda de PrendasVendidas hacer
+            total = total + prenda.subtotal()
+        fin PARA
+        retornar total
+    fin metodo
+fin clase
+
+clase Tarjeta implementa FormaDePago 
+    atributo cuotas:int
+    atributo coeficiente:float
+   metodo monto(productos:lista de PrendasVendidas)
+        variable totalPrendas = 0
+        PARA cada prenda de PrendasVendidas hacer
+            totalPrendas = totalPrendas + prenda.subtotal()
+            fin PARA
+        retornar totalPrendas
+    fin metodo
+
+    metodo recargo():float
+    retornar (cuotas*coeficiente)+(0.01*totalPrendas)
+    fin metodo
+fin clase
+
